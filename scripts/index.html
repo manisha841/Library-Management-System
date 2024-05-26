@@ -69,7 +69,7 @@
 
             async function fetchCategories() {
                 try {
-                    const response = await fetch('/categories');
+                    const response = await fetch('http://127.0.0.1:8000/categories/');
                     if (!response.ok) {
                         throw new Error('Failed to fetch categories');
                     }
@@ -83,7 +83,7 @@
 
             async function fetchBooks(categoryId) {
                 try {
-                    const response = await fetch(`/books/${categoryId}`);
+                    const response = await fetch(`http://127.0.0.1:8000/books/${categoryId}`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch books');
                     }
@@ -101,7 +101,7 @@
                     const categoryElement = document.createElement('li');
                     categoryElement.classList.add('category');
                     categoryElement.textContent = category.name;
-                    categoryElement.setAttribute('data-category-id', category.id);
+                    categoryElement.setAttribute('data-category-id', category.category_id);
                     categoriesContainer.appendChild(categoryElement);
                 });
             }

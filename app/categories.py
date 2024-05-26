@@ -38,7 +38,6 @@ class CreateBooks(BaseModel):
 
 class BorrowBooks(BaseModel):
     is_borrowed: bool
-    borrower_id: UUID
 
 
 @router.post("/user/", status_code=HTTPStatus.CREATED)
