@@ -12,7 +12,7 @@ type Book {
 
 type Category {
     required property name -> str {
-        constraint max_len_value(100)
+        constraint exclusive;
     }
 }
 

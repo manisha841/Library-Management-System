@@ -38,7 +38,7 @@ async def shutdown_edgedb(app):
     await client.aclose()
 
 
-def make_app():
+def create_app():
     app = FastAPI()
 
     app.on_event("startup")(functools.partial(setup_edgedb, app))
@@ -58,4 +58,4 @@ def make_app():
     return app
 
 
-fast_api = make_app()
+app = create_app()
