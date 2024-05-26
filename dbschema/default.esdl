@@ -1,30 +1,27 @@
 module default {
 
 type Book {
-    required property title -> str {
-        constraint max_len_value(200)
+    required title: str {
+        constraint max_len_value(200);
     }
-    property author -> str {
-        constraint max_len_value(200)
+    author: str {
+        constraint max_len_value(200);
     }
-    required link category -> Category
-}
+    required category: Category;
+    borrower: User;
+    is_borrowed: bool;
+};
 
 type Category {
-    required property name -> str {
+    required name: str {
         constraint exclusive;
     }
-}
+};
 
 type User {
-    required property username -> str {
-        constraint max_len_value(100)
+    full_name: str {
+        constraint max_len_value(200);
     }
-    property full_name -> str {
-        constraint max_len_value(200)
-    }
-    multi link borrowed_books -> Book {
-    }
-}
+};
 
 }

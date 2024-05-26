@@ -55,10 +55,10 @@
     <div class="container">
         <h1>Library Management System</h1>
         <ul class="categories" id="categories-container">
-            <!-- Categories will be dynamically added here -->
+            
         </ul>
         <ul class="books" id="books-container">
-            <!-- Books will be dynamically added here -->
+            
         </ul>
     </div>
 
@@ -116,12 +116,10 @@
                 });
             }
 
-            // Load categories initially
             fetchCategories().then(categories => {
                 displayCategories(categories);
             });
 
-            // Add event listener for category click
             categoriesContainer.addEventListener('click', async (event) => {
                 if (event.target.classList.contains('category')) {
                     const categoryId = event.target.getAttribute('data-category-id');
