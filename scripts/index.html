@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .categories {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .category {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .category:hover {
+            background-color: #eaeaea;
+        }
+        .books {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        .book {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Library Management System</h1>
+        <ul class="categories" id="categories-container">
+            <!-- Categories will be dynamically added here -->
+        </ul>
+        <ul class="books" id="books-container">
+            <!-- Books will be dynamically added here -->
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoriesContainer = document.getElementById('categories-container');
+            const booksContainer = document.getElementById('books-container');
+
+            async function fetchCategories() {
+                try {
+                    const response = await fetch('/categories');
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch categories');
+                    }
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error(error);
+                    alert('Failed to fetch categories. Please try again later.');
+                }
+            }
+
+            async function fetchBooks(categoryId) {
+                try {
+                    const response = await fetch(`/books/${categoryId}`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch books');
+                    }
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error(error);
+                    alert('Failed to fetch books. Please try again later.');
+                }
+            }
+
+            function displayCategories(categories) {
+                categoriesContainer.innerHTML = '';
+                categories.forEach(category => {
+                    const categoryElement = document.createElement('li');
+                    categoryElement.classList.add('category');
+                    categoryElement.textContent = category.name;
+                    categoryElement.setAttribute('data-category-id', category.id);
+                    categoriesContainer.appendChild(categoryElement);
+                });
+            }
+
+            function displayBooks(books) {
+                booksContainer.innerHTML = '';
+                books.forEach(book => {
+                    const bookElement = document.createElement('li');
+                    bookElement.classList.add('book');
+                    bookElement.textContent = book.title + ' by ' + book.author;
+                    booksContainer.appendChild(bookElement);
+                });
+            }
+
+            // Load categories initially
+            fetchCategories().then(categories => {
+                displayCategories(categories);
+            });
+
+            // Add event listener for category click
+            categoriesContainer.addEventListener('click', async (event) => {
+                if (event.target.classList.contains('category')) {
+                    const categoryId = event.target.getAttribute('data-category-id');
+                    const books = await fetchBooks(categoryId);
+                    displayBooks(books);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

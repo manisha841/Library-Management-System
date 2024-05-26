@@ -5,7 +5,7 @@ from typing import List
 from uuid import UUID
 
 import edgedb
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from app import get_edgedb_client
@@ -61,11 +61,17 @@ async def add_books(
     category_id: UUID,
     client: edgedb.AsyncIOClient = Depends(get_edgedb_client),
 ):
-    books = await create_books_async_edgeql.create_books(
-        author=payload.author,
-        title=payload.title,
-        category_id=category_id,
-    )
+    try:
+        books = await create_books_async_edgeql.create_books(
+            executor=client,
+            author=payload.author,
+            title=payload.title,
+            category_id=category_id,
+        )
+    except edgedb.errors.MissingRequiredError as e:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST, detail={"error": str(e)}
+        )
     return books
 
 

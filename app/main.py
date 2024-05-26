@@ -6,7 +6,7 @@ import edgedb
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from app import categories, books
+from app import categories
 
 from dotenv import load_dotenv
 import os
@@ -14,11 +14,11 @@ import os
 load_dotenv()
 
 EDGEDB_PORT = os.getenv("EDGEDB_PORT")
-EDGEDB_HOST= os.getenv("EDGEDB_HOST")
-EDGEDB_USER= os.getenv("EDGEDB_USER")
-EDGEDB_PASSWORD= os.getenv("EDGEDB_PASSWORD")
-EDGEDB_DB= os.getenv("EDGEDB_DB")
-EDGEDB_TLS_CA= os.getenv("EDGEDB_TLS_CA")
+EDGEDB_HOST = os.getenv("EDGEDB_HOST")
+EDGEDB_USER = os.getenv("EDGEDB_USER")
+EDGEDB_PASSWORD = os.getenv("EDGEDB_PASSWORD")
+EDGEDB_DB = os.getenv("EDGEDB_DB")
+EDGEDB_TLS_CA = os.getenv("EDGEDB_TLS_CA")
 
 
 async def setup_edgedb(app):
@@ -52,7 +52,6 @@ def create_app():
         allow_headers=["*"],
     )
 
-    app.include_router(books.router)
     app.include_router(categories.router)
 
     return app
